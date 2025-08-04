@@ -3,8 +3,7 @@ FROM ubuntu:24.04
 LABEL author="Michael Parker" maintainer="parker@pterodactyl.io"
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN useradd -m -d /home/container -s /bin/bash container \
-    && dpkg --add-architecture i386 \
+RUN dpkg --add-architecture i386 \
     && apt-get update \
     && apt-get upgrade -y
 
@@ -85,10 +84,11 @@ RUN update-locale lang=en_US.UTF-8 \
     && dpkg-reconfigure --frontend noninteractive locales \
     && rm -rf /var/lib/apt/lists/*
 
+RUN useradd -m -d /home/container container
+
 USER        container
-ENV         HOME=/home/container
+ENV         USER=container HOME=/home/container
 WORKDIR     /home/container
 
-COPY --chown=container:container --chmod=755 ./entrypoint.sh /entrypoint.sh
-
+COPY        ./entrypoint.sh /entrypoint.sh
 CMD         ["/bin/bash", "/entrypoint.sh"]
