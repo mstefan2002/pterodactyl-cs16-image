@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/container
-chown pterodactyl:pterodactyl .
+chown container:container .
 sleep 1
 export INTERNAL_IP=`ip route get 1 | awk '{print $NF;exit}'`
 
